@@ -43,6 +43,17 @@ func (daib *DegenerateAndIncrementalBinaryTree) InsertLeaf(leaf *big.Int) (err e
 	return
 }
 
+func (daib *DegenerateAndIncrementalBinaryTree) InsertBatchLeaf(leaves []*big.Int) (err error) {
+	for _, leaf := range leaves {
+		err = daib.InsertLeaf(leaf)
+		if err != nil {
+			log.Printf("InsertBatchLeaf - error InsertLeaf - Leaf: %s\nError: %s\n", leaf.Text(10), err.Error())
+			return
+		}
+	}
+	return
+}
+
 func NewDegenerateAndIncrementalBinaryTree(zero *big.Int) (tree DegenerateAndIncrementalBinaryTree) {
 	tree.Leaves = make(map[int]*big.Int)
 	tree.Zero = zero
