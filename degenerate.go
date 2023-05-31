@@ -28,7 +28,12 @@ func (daib *DegenerateAndIncrementalBinaryTree) InsertLeaf(leaf *big.Int) (err e
 	daib.LastIndex++
 	daib.Leaves[daib.LastIndex] = leaf
 	if daib.ActualRoot == nil {
-		daib.ActualRoot, err = poseidon.Hash([]*big.Int{leaf})
+		//In case the leaf value is 0, big.Int deals with it as nil, so it's need to hash as []byte
+		if leaf == nil {
+			daib.ActualRoot, err = poseidon.HashBytes([]byte("0"))
+		} else {
+			daib.ActualRoot, err = poseidon.Hash([]*big.Int{leaf})
+		}
 		if err != nil {
 			log.Println("InsertLeaf - error InsertLeafWithPreviousRoot - error hashing", leaf.Text(10), " - error is: ", err.Error())
 			return
