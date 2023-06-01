@@ -40,3 +40,23 @@ func TestTreeBatchInsertion(t *testing.T) {
 	t.Log(tree.ActualRoot.Text(10))
 	t.Logf("0x%064s", tree.ActualRoot.Text(16))
 }
+
+func TestTreeBatchTwoElementsInsertion(t *testing.T) {
+	var inputsBigInt []*big.Int
+	inputs := []int64{1, 2}
+	for i := 0; i < len(inputs); i++ {
+		inputsBigInt = append(inputsBigInt, big.NewInt(inputs[i]))
+	}
+	tree := NewDegenerateAndIncrementalBinaryTree(big.NewInt(0))
+	assert.NotNil(t, tree)
+	assert.Nil(t, tree.ActualRoot)
+	tree.InsertBatchLeaves(inputsBigInt)
+	assert.NotNil(t, tree.ActualRoot)
+	t.Log("TestTreeBatchTwoElementsInsertion: " + tree.ActualRoot.Text(10))
+	t.Logf("TestTreeBatchTwoElementsInsertion : 0x%064s", tree.ActualRoot.Text(16))
+}
+
+/*
+19372501226129528824345446018646602194007058152094609827715516759785487890142
+0x2ad47277058717d2bec37bd6f61b36ba071513b2d53c975291afd5b75c6276de
+*/
