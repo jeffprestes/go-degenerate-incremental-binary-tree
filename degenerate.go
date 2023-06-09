@@ -24,6 +24,12 @@ type DegenerateAndIncrementalBinaryTree struct {
 	Zero       *big.Int
 }
 
+func NewDegenerateAndIncrementalBinaryTree(zero *big.Int) (tree DegenerateAndIncrementalBinaryTree) {
+	tree.Leaves = make(map[int]*big.Int)
+	tree.Zero = zero
+	return
+}
+
 func (daib *DegenerateAndIncrementalBinaryTree) InsertLeaf(leaf *big.Int) (err error) {
 	daib.LastIndex++
 	daib.Leaves[daib.LastIndex] = leaf
@@ -50,9 +56,17 @@ func (daib *DegenerateAndIncrementalBinaryTree) InsertBatchLeaves(leaves []*big.
 	return
 }
 
-func NewDegenerateAndIncrementalBinaryTree(zero *big.Int) (tree DegenerateAndIncrementalBinaryTree) {
-	tree.Leaves = make(map[int]*big.Int)
-	tree.Zero = zero
+func (daib *DegenerateAndIncrementalBinaryTree) FillWithZeros(maxLeaves uint) (err error) {
+	missingLeaves := maxLeaves - uint(daib.LastIndex)
+	if maxLeaves < 1 {
+		return
+	}
+	for i := 0; i < int(missingLeaves); i++ {
+		err = daib.InsertLeaf(daib.Zero)
+		if err != nil {
+			return err
+		}
+	}
 	return
 }
 
